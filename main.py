@@ -2,43 +2,48 @@ from numpy import *
 import scipy.io
 import pywt
 import matplotlib.pyplot as plt
-from PIL import Image, ImageDraw
 
 
-#image = scipy.misc.imread('girl.jpg',  mode='RGB')
-image = scipy.misc.imread('temp.jpg', flatten='true',  mode='RGB')
+def get_image_array(image):
+    return scipy.misc.imread(image, flatten='true', mode='RGB')
 
-#image = plt.imread('girl.jpg')
 
-noiseVariance = 10
-image += random.normal(0, noiseVariance, size=image.shape)
-wavelet = pywt.Wavelet('db1')
-#levels = int(floor(log2(image.shape[0])))
-threhold = noiseVariance * sqrt(2*log2(image.size))
+def get_image_array_with_noise(image, noiseVariance):
+    image_with_noise = get_image_array(image) + random.normal(0, noiseVariance, size=get_image_array(image).shape)
+    return image_with_noise
 
-WaveletCoeffs = pywt.wavedec2(image, wavelet, level=2)
-print(len(WaveletCoeffs))
 
-# plt.plot(WaveletCoeffs[1][0])
+def get_denoise_image_array(image_file, wavelet, level_transform, cA_threhold, cH_threhold, cV_threhold, cD_threhold, mode_threholding):
+
+    image = get_image_array(image_file)
+    wavelet_transformation = pywt.Wavelet(wavelet)
+
+    #WaveletCoeffs = pywt.wavedec2(get_image_array(image), wavelet_transformation, level=level_transform)
+    WaveletCoeffs = pywt.wavedec2(get_image_array_with_noise(image_file, 10), wavelet_transformation, level=level_transform)
+
+    cA = pywt.threshold(WaveletCoeffs[0], cA_threhold, mode='soft')
+    cH = pywt.threshold(WaveletCoeffs[1][0], cH_threhold, mode='soft')
+    cV = pywt.threshold(WaveletCoeffs[1][1], cV_threhold, mode='soft')
+    cD = pywt.threshold(WaveletCoeffs[1][2], cD_threhold, mode='soft')
+
+    thresholded_wavelet = [cA, [cH, cV, cD]]
+
+    denoise_image_array = pywt.waverec2(thresholded_wavelet, wavelet_transformation)
+
+    return denoise_image_array, thresholded_wavelet, cH
+
+
+def show_image(image_array):
+    plt.axis('off')
+    plt.imshow(image_array)
+    plt.gray()
+    plt.show()
+
+
+denoise_array = get_denoise_image_array('temp.jpg', 'db2', 2, 15, 10, 10, 10, 'soft')[0]
+#show_image()
+show_image(denoise_array)
+
+# plt.plot(get_denoise_image_array('temp.jpg', 'db1', 1, 10, 200, 200, 200, 'soft')[2])
 # plt.show()
-
-cA = pywt.threshold(WaveletCoeffs[0], 10, mode='soft')
-cH = pywt.threshold(WaveletCoeffs[1][0], 200, mode='hard')
-cV = pywt.threshold(WaveletCoeffs[1][1], 200, mode='hard')
-cD = pywt.threshold(WaveletCoeffs[1][2], 200, mode='hard')
-
-print(cH)
-thresholded_wavelet =[cA, [cH, cV, cD]]
-
-denoise_image = pywt.waverec2(thresholded_wavelet, wavelet)
-
-print('Image', image)
-print('Denoise image:', denoise_image)
-plt.axis("off")
-plt.figure(1)
-plt.imshow(image)
-plt.gray()
-#plt.show()
-plt.figure(2)
-plt.imshow(denoise_image)
-plt.show()
+print(get_denoise_image_array('temp.jpg', 'db1', 1, 5, 10, 10, 10, 'soft')[1][1])
