@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 
 
 def get_image_array(image):
-    return scipy.misc.imread(image, flatten='true', mode='RGB')
+    #return scipy.misc.imread(image, flatten='true', mode='RGB')
+    return scipy.misc.imread(image, mode='RGB')
 
 
 def get_image_array_with_noise(image, noiseVariance):
@@ -28,7 +29,7 @@ def get_denoise_image_array(image_file, wavelet, level_transform, cA_threhold, c
 
     thresholded_wavelet = [cA, [cH, cV, cD]]
 
-    denoise_image_array = pywt.waverec2(thresholded_wavelet, wavelet_transformation)
+    denoise_image_array = pywt.waverec2(thresholded_wavelet, wavelet_transformation, mode='soft')
 
     return denoise_image_array, thresholded_wavelet, cH
 
@@ -40,10 +41,12 @@ def show_image(image_array):
     plt.show()
 
 
-denoise_array = get_denoise_image_array('temp.jpg', 'db2', 2, 15, 10, 10, 10, 'soft')[0]
+#denoise_array = get_denoise_image_array('temp.jpg', 'db2', 2, 15, 10, 10, 10, 'soft')[0]
 #show_image()
-show_image(denoise_array)
+#show_image(denoise_array)
 
 # plt.plot(get_denoise_image_array('temp.jpg', 'db1', 1, 10, 200, 200, 200, 'soft')[2])
 # plt.show()
-print(get_denoise_image_array('temp.jpg', 'db1', 1, 5, 10, 10, 10, 'soft')[1][1])
+#print(get_denoise_image_array('temp.jpg', 'db1', 1, 5, 10, 10, 10, 'soft')[1][1])
+
+#print(get_image_array('temp.jpg'))
