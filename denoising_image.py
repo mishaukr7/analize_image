@@ -28,4 +28,5 @@ def denoising_image(image, wavelet, level_of_transformation, threshold, mode_thr
     return denoised_rgb_image_array
 
 
-denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft')
+main.show_image(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
+#print(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
