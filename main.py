@@ -2,6 +2,7 @@ from numpy import *
 import scipy.io
 import pywt
 import matplotlib.pyplot as plt
+from PIL import Image
 
 
 def get_image_array(image):
@@ -39,6 +40,16 @@ def show_image(image_array):
     plt.imshow(image_array)
     plt.gray()
     plt.show()
+
+
+def image_show_PIL(im_array):
+    img = Image.fromarray(array(im_array), 'RGB')
+    img.save('my.png')
+    img.show()
+
+
+
+
 
 
 #denoise_array = get_denoise_image_array('temp.jpg', 'db2', 2, 15, 10, 10, 10, 'soft')[0]

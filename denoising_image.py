@@ -2,9 +2,9 @@ import image_extract_array
 import wavelet_thresholding
 import main
 
+
 def denoising_image(image, wavelet, level_of_transformation, threshold, mode_thresholding):
     '''
-
     :param image: path to image;
     :param wavelet: 'haar', 'db', 'sym', 'coif', 'bior', 'rbio', 'dmey', 'gaus'
     :param level_of_transformation:
@@ -23,10 +23,11 @@ def denoising_image(image, wavelet, level_of_transformation, threshold, mode_thr
 
     denoised_array = wavelet_thresholding.wavelet_reconstruction(thresholded_wavelet, wavelet)
 
-    denoised_rgb_image_array = image_extract_array.transform_coefficients_from_yuv_to_rgb(denoised_array, U, V)
+    denoised_rgb_image_array = image_extract_array.transform(denoised_array, U, V)
 
     return denoised_rgb_image_array
 
 
-main.show_image(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
+#main.show_image(denoising_image('girl.jpg', 'db1', 2, [300, 100, 100, 100], 'hard'))
 #print(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
+main.image_show_PIL(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
