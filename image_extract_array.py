@@ -28,7 +28,7 @@ def transform_coefficients_from_rgb_to_yuv(input_array, a, b, c):
     return transform_list
 
 
-def transform_coefficients_from_yuv_to_rgb1(Y, U, V):
+def transform_coefficients_from_yuv_to_rgb(Y, U, V):
     '''
     Transform RGB format to YUV (grayscale layer format).
     :param Y: array of Y-сomponent grayscale layer of image;
@@ -41,27 +41,26 @@ def transform_coefficients_from_yuv_to_rgb1(Y, U, V):
     for y_list, u_list, v_list in list(zip(Y, U, V)):
         transform_list_internal = []
         for y_list_internal, u_list_internal, v_list_internal in list(zip(y_list, u_list, v_list)):
-            R = round(y_list_internal + 1.3707 * (v_list_internal - 128), 1)
-            G = round(y_list_internal - 0.3365 * (u_list_internal - 128) - 0.6982*(v_list_internal - 128), 1)
-            B = round(y_list_internal + 1.7324 * (u_list_internal - 128), 1)
-            transform_list_internal_three_value = [R, G, B]
+            R = y_list_internal + 1.3707 * (v_list_internal - 128)
+            G = y_list_internal - 0.3365 * (u_list_internal - 128) - 0.6982*(v_list_internal - 128)
+            B = y_list_internal + 1.7324 * (u_list_internal - 128)
+            transform_list_internal_three_value = [abs(float(R/255)), abs(float(G/255)), abs(float(B/255))]
             transform_list_internal.append(transform_list_internal_three_value)
         transform_list.append(list(transform_list_internal))
     return transform_list
 
 
-def transform_coefficients_from_yuv_to_rgb(Y, U, V):
+def transform_coefficients_from_yuv_to_rgb1(Y, U, V):
     transform_list = []
     for list_of_tuples in list(zip(Y, U, V)):
         for list_of_three_lists in list_of_tuples:
             transform_list_internal = []
-
             zip_lists = list(zip(list_of_three_lists[0], list_of_three_lists[1], list_of_three_lists[2]))
             for first, second, third in zip_lists:
                 R = first + 1.3707 * (third - 128)
-                G = first - 0.3365 * (second - 128) - 0.6982 * (second - 128)
+                G = first - 0.3365 * (second - 128) - 0.6982 * (third - 128)
                 B = first + 1.7324 * (second - 128)
-                transform_list_internal_three_value = [R, G, B]
+                transform_list_internal_three_value = [abs(int(R)), abs(int(G)), abs(int(B))]
                 transform_list_internal.append(transform_list_internal_three_value)
             transform_list.append(transform_list_internal)
     return transform_list
@@ -79,10 +78,10 @@ def transform(y, u, v):
                     (third_list[counter_external][counter_internal] - 128)
             g = first_list[counter_external][counter_internal] - 0.3365 * \
                     (second_list[counter_external][counter_internal] - 128) - \
-                    0.6928 * (second_list[counter_external][counter_internal - 128])
+                    0.6982 * (third_list[counter_external][counter_internal - 128])
             b = first_list[counter_external][counter_internal] + 1.7324 * \
                     (second_list[counter_external][counter_internal] - 128)
-            three_rgb_value = [float(int(r)), float(int(g)), float(int(b))]
+            three_rgb_value = [abs(float(r/255)), abs(float(g/255)), abs(float(b/255))]
             transform_internal.append(three_rgb_value)
         transform_result_list.append(transform_internal)
     return transform_result_list

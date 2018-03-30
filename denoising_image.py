@@ -14,20 +14,18 @@ def denoising_image(image, wavelet, level_of_transformation, threshold, mode_thr
     '''
 
     image_array = image_extract_array.get_image_array(image)
-    Y = image_extract_array.transform_coefficients_from_rgb_to_yuv(image_array, 0.299, 0.587, 0.114)
-    U = image_extract_array.transform_coefficients_from_rgb_to_yuv(image_array, 0.167, -0.3313, 0.5)
+    Y = image_extract_array.transform_coefficients_from_rgb_to_yuv(image_array, 0.299, 0.578, 0.114)
+    U = image_extract_array.transform_coefficients_from_rgb_to_yuv(image_array, 0.1678, -0.3313, 0.5)
     V = image_extract_array.transform_coefficients_from_rgb_to_yuv(image_array, 0.5, -0.4187, 0.0813)
 
     WaveletCoefficients = wavelet_thresholding.wavelet_decomposition(Y, wavelet, level_of_transformation)
     thresholded_wavelet = wavelet_thresholding.wavelet_thresholding(WaveletCoefficients, threshold, mode_thresholding)
-
     denoised_array = wavelet_thresholding.wavelet_reconstruction(thresholded_wavelet, wavelet)
-
-    denoised_rgb_image_array = image_extract_array.transform(denoised_array, U, V)
+    denoised_rgb_image_array = image_extract_array.transform_coefficients_from_yuv_to_rgb(denoised_array, U, V)
 
     return denoised_rgb_image_array
 
 
-#main.show_image(denoising_image('girl.jpg', 'db1', 2, [300, 100, 100, 100], 'hard'))
-#print(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
-main.image_show_PIL(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
+main.show_image(denoising_image('boy.jpg', 'db1', 1, [1, 1, 1, 1], 'greater'))
+#print(denoising_image('a713.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
+#main.image_show_PIL(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
