@@ -26,12 +26,9 @@ def wavelet_thresholding(array_of_wavelet_coeff, threshold, mode_thresholding):
     :return: thresholded wavelet coefficients.
     '''
 
-    cA = pywt.threshold(array_of_wavelet_coeff[0], threshold[0], mode=mode_thresholding)
-    cH = pywt.threshold(array_of_wavelet_coeff[1][0], threshold[1], mode=mode_thresholding)
-    cV = pywt.threshold(array_of_wavelet_coeff[1][1], threshold[2], mode=mode_thresholding)
-    cD = pywt.threshold(array_of_wavelet_coeff[1][2], threshold[3], mode=mode_thresholding)
-
-    thresholded_wavelet = [cA, [cH, cV, cD]]
+    cA = pywt.threshold(array_of_wavelet_coeff[0], threshold, mode=mode_thresholding)
+    cDetail = array_of_wavelet_coeff[1]
+    thresholded_wavelet = [cA, cDetail]
 
     return thresholded_wavelet
 

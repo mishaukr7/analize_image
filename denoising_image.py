@@ -9,7 +9,7 @@ def denoising_image(image, wavelet, level_of_transformation, threshold, mode_thr
     :param wavelet: 'haar', 'db', 'sym', 'coif', 'bior', 'rbio', 'dmey', 'gaus'
     :param level_of_transformation:
     :param threshold: thresholding value;
-    :param mode_threholding: {'soft', 'hard', 'greater', 'less'}
+    :param mode_thresholding: {'soft', 'hard', 'greater', 'less'}
     :return: denoised image array;
     '''
 
@@ -26,6 +26,8 @@ def denoising_image(image, wavelet, level_of_transformation, threshold, mode_thr
     return denoised_rgb_image_array
 
 
-main.show_image(denoising_image('boy.jpg', 'db1', 1, [1, 1, 1, 1], 'greater'))
+
+main.show_image(denoising_image('boy.jpg', 'db1', 5, [1, 1, 1, 1], 'soft'))
 #print(denoising_image('a713.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
 #main.image_show_PIL(denoising_image('temp.jpg', 'db1', 2, [5, 5, 5, 5], 'soft'))
+
