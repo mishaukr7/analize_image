@@ -38,13 +38,13 @@ def transform_coefficients_from_yuv_to_rgb(Y, U, V):
     '''
     transform_list = []
 
-    for y_list, u_list, v_list in list(zip(Y, U, V)):
+    for y_list, u_list, v_list in zip(Y, U, V):
         transform_list_internal = []
-        for y_list_internal, u_list_internal, v_list_internal in list(zip(y_list, u_list, v_list)):
+        for y_list_internal, u_list_internal, v_list_internal in zip(y_list, u_list, v_list):
             R = y_list_internal + 1.3707 * (v_list_internal - 128)
             G = y_list_internal - 0.3365 * (u_list_internal - 128) - 0.6982*(v_list_internal - 128)
             B = y_list_internal + 1.7324 * (u_list_internal - 128)
-            transform_list_internal_three_value = [abs(float(R/255)), abs(float(G/255)), abs(float(B/255))]
+            transform_list_internal_three_value = [abs(float(R)), abs(float(G)), abs(float(B))]
             transform_list_internal.append(transform_list_internal_three_value)
         transform_list.append(list(transform_list_internal))
     return transform_list
@@ -87,7 +87,17 @@ def transform(y, u, v):
     return transform_result_list
 
 
-
+def last_transform(y, u, v):
+    internal_array = []
+    external_array = []
+    for q_1 in range(len(y)):
+        for q_2 in range(len(y[q_1])):
+            r = y[q_1][q_2] + 1.3707 * (v[q_1][q_2] - 128)
+            g = y[q_1][q_2] - 0.3365 * (u[q_1][q_2] - 128) - 0.6982 * (v[q_1][q_2] - 128)
+            b = y[q_1][q_2] + 1.7324 * (u[q_1][q_2] - 128)
+            internal_array.append([r, g, b])
+        external_array.append(internal_array)
+    return external_array
 
 
 

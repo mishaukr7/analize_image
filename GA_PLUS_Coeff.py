@@ -3,7 +3,7 @@ import numpy
 import pywt
 import matplotlib.pyplot as plot
 #import main
-
+import image_extract_array
 #image = main.get_image_array('temp.jpg')
 
 #print(image)
@@ -15,10 +15,13 @@ b = [[4, 5, 6], [5, 4, 3], [2, 2, 2]]
 
 c = [[1, 1, 1], [7, 7, 7], [6, 6, 6]]
 
-result = list(zip(a, b, c))
+#print(image_extract_array.last_transform(a, b, c))
 
-print(result)
-print(list(zip(result[0][0], result[0][1], result[0][2])))
+
+# result = list(zip(a, b, c))
+#
+# print(result)
+# print(list(zip(result[0][0], result[0][1], result[0][2])))
 
 
 # for list_of_tuples in list(zip(a, b, c)):

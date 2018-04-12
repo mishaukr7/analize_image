@@ -8,6 +8,7 @@ from PIL import Image
 def get_image_array(image):
     #return scipy.misc.imread(image, flatten='true', mode='RGB')
     return scipy.misc.imread(image, mode='RGB')
+#print(get_image_array('temp.jpg'))
 
 def get_image_array_with_noise(image, noiseVariance):
     image_with_noise = get_image_array(image) + random.normal(0, noiseVariance, size=get_image_array(image).shape)
