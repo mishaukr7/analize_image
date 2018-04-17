@@ -1,6 +1,7 @@
 import scipy.io
 import numpy
 
+
 def get_image_array(image):
     '''
 
@@ -29,13 +30,13 @@ def transform_coefficients_from_rgb_to_yuv(input_array, a, b, c):
 
 
 def transform_coefficients_from_yuv_to_rgb(Y, U, V):
-    '''
+    """
     Transform RGB format to YUV (grayscale layer format).
     :param Y: array of Y-сomponent grayscale layer of image;
     :param U: array of U-сomponent grayscale layer of image
     :param V: array of V-сomponent grayscale layer of image
     :return: array RGB-format of image.
-    '''
+    """
     transform_list = []
 
     for y_list, u_list, v_list in zip(Y, U, V):
@@ -88,9 +89,9 @@ def transform(y, u, v):
 
 
 def last_transform(y, u, v):
-    internal_array = []
     external_array = []
     for q_1 in range(len(y)):
+        internal_array = []
         for q_2 in range(len(y[q_1])):
             r = y[q_1][q_2] + 1.3707 * (v[q_1][q_2] - 128)
             g = y[q_1][q_2] - 0.3365 * (u[q_1][q_2] - 128) - 0.6982 * (v[q_1][q_2] - 128)
